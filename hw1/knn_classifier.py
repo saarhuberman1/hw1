@@ -89,9 +89,11 @@ def l2_dist(x1: Tensor, x2: Tensor):
     #    combine the three terms efficiently.
     #  - Don't use torch.cdist
 
+
+    # (a-b)^2 = a^2 - 2ab + b^2 = a*a + b*b -2*a*b
     dists = None
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    dists = x1*x1 +x2*x2 - 2*x1*x2
     # ========================
 
     return dists
