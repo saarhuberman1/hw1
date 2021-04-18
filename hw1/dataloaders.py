@@ -69,8 +69,8 @@ def create_train_validation_loaders(
     dataset_len = dataset.__len__()
     vaild_samples = random.sample(list(range(dataset_len)), int(dataset_len*validation_ratio))
     train_samples = [x for x in range(dataset_len) if x not in vaild_samples]
-    dl_train = DataLoader(dataset, 100, num_workers=num_workers, sampler=SubsetRandomSampler(train_samples))
-    dl_valid = DataLoader(dataset, 100, num_workers=num_workers, sampler=SubsetRandomSampler(vaild_samples))
+    dl_train = DataLoader(dataset, batch_size, num_workers=num_workers, sampler=SubsetRandomSampler(train_samples))
+    dl_valid = DataLoader(dataset, batch_size, num_workers=num_workers, sampler=SubsetRandomSampler(vaild_samples))
 
     # ========================
 
