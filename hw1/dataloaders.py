@@ -3,7 +3,8 @@ import numpy as np
 import torch
 import torch.utils.data
 from typing import Sized, Iterator
-from torch.utils.data import Dataset, Sampler
+from torch.utils.data import Dataset, Sampler, DataLoader, SubsetRandomSampler
+import random
 
 
 class FirstLastSampler(Sampler):
@@ -25,7 +26,14 @@ class FirstLastSampler(Sampler):
         # If the length of the data source is N, you should return indices in a
         # first-last ordering, i.e. [0, N-1, 1, N-2, ...].
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        N = len(self.data_source)
+        index = 0
+        step = N-1
+        for _ in range(N):
+            yield index
+            index = index + step
+            step = -1 * step + np.sign(step)
+
         # ========================
 
     def __len__(self):
@@ -58,7 +66,12 @@ def create_train_validation_loaders(
     #  Hint: you can specify a Sampler class for the `DataLoader` instance
     #  you create.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    dataset_len = dataset.__len__()
+    vaild_samples = random.sample(list(range(dataset_len)), int(dataset_len*validation_ratio))
+    train_samples = [x for x in range(dataset_len) if x not in vaild_samples]
+    dl_train = DataLoader(dataset, 100, num_workers=num_workers, sampler=SubsetRandomSampler(train_samples))
+    dl_valid = DataLoader(dataset, 100, num_workers=num_workers, sampler=SubsetRandomSampler(vaild_samples))
+
     # ========================
 
     return dl_train, dl_valid
