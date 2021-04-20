@@ -1,7 +1,6 @@
 import abc
 import torch
-
-
+print("saar")
 class ClassifierLoss(abc.ABC):
     """
     Represents a loss function of a classifier.
@@ -52,12 +51,24 @@ class SVMHingeLoss(ClassifierLoss):
 
         loss = None
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        # need to add the check for same value
+        # M = torch.max(torch.tensor(0.), self.delta + x_scores - x_scores.gather(1, y.reshape(-1, 1)))
+        # print(M.shape)
+        # loss = (M.sum() - self.delta * y.shape[0]) / y.shape[0]
+        delta_matrix = torch.ones(x_scores.shape) * self.delta
+        value = torch.tensor([0.])
+        indices = (torch.tensor(range(y.shape[0])), y)
+        delta_matrix.index_put_(indices, value)
+        M = torch.max(torch.tensor(0.), delta_matrix + x_scores - x_scores.gather(1, y.reshape(-1, 1)))
+        loss = M.sum() / y.shape[0]
+
         # ========================
 
         # TODO: Save what you need for gradient calculation in self.grad_ctx
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        self.grad_ctx['M'] = M
+        self.grad_ctx['x'] = x
+        self.grad_ctx['y'] = y
         # ========================
 
         return loss
@@ -75,7 +86,11 @@ class SVMHingeLoss(ClassifierLoss):
 
         grad = None
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        G = (self.grad_ctx['M'] > 0).type(torch.float)
+        indices = (torch.tensor(range(G.shape[0])), self.grad_ctx['y'])
+        G.index_put_(indices, -1 * G.sum(dim=1))
+        G = G / G.shape[0]
+        grad = self.grad_ctx['x'].T @ G
         # ========================
 
         return grad

@@ -66,7 +66,6 @@ class KNNClassifier(object):
             # ====== YOUR CODE: ======
             y_pred[i] = self.y_train[torch.topk(dist_matrix[:, i], self.k, largest=False).indices].mode().values
             # ========================
-
         return y_pred
 
 
@@ -92,9 +91,7 @@ def l2_dist(x1: Tensor, x2: Tensor):
 
     dists = None
     # ====== YOUR CODE: ======
-    x1 = x1.reshape(x1.shape[0], 1, x1.shape[1])
-    x2 = x2.reshape(1, x2.shape[0], x2.shape[1])
-    dists = ((x1 - x2) ** 2).sum(-1).sqrt()
+    dists = ((x1 ** 2).sum(dim=1).unsqueeze(1) - 2 * (x1 @ x2.T) + (x2 ** 2).sum(dim=1)).sqrt()
     # ========================
 
     return dists
@@ -146,7 +143,7 @@ def find_best_k(ds_train: Dataset, k_choices, num_folds):
 
         # ====== YOUR CODE: ======
         k_accuracy = []
-        for _ in range(num_folds):
+        for fold in range(num_folds):
             dl_train, dl_valid = dataloaders.create_train_validation_loaders(ds_train, 1/num_folds)
             model.train(dl_train)
             x_valid, y_valid = dataloader_utils.flatten(dl_valid)
