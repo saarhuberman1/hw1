@@ -32,7 +32,8 @@ class LinearRegressor(BaseEstimator, RegressorMixin):
 
         y_pred = None
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        # print(self.weights_.T)
+        y_pred = self.weights_ @ X.T
         # ========================
 
         return y_pred
@@ -51,7 +52,9 @@ class LinearRegressor(BaseEstimator, RegressorMixin):
 
         w_opt = None
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        reg = X.shape[0] * self.reg_lambda * np.identity(X.shape[1])
+        reg[0, 0] = 1
+        w_opt = np.linalg.inv(X.T @ X + reg) @ X.T @ y
         # ========================
 
         self.weights_ = w_opt
@@ -77,7 +80,12 @@ def fit_predict_dataframe(
     """
     # TODO: Implement according to the docstring description.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    if feature_names is None:
+        X = df.drop(target_name, axis='columns')
+    else:
+        X = df[feature_names]
+    y = df[target_name]
+    y_pred = model.fit_predict(X, y)
     # ========================
     return y_pred
 
@@ -100,7 +108,7 @@ class BiasTrickTransformer(BaseEstimator, TransformerMixin):
 
         xb = None
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        xb = np.hstack((np.ones((X.shape[0], 1)), X))
         # ========================
 
         return xb
@@ -117,7 +125,6 @@ class BostonFeaturesTransformer(BaseEstimator, TransformerMixin):
         # TODO: Your custom initialization, if needed
         # Add any hyperparameters you need and save them as above
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
         # ========================
 
     def fit(self, X, y=None):
@@ -139,7 +146,9 @@ class BostonFeaturesTransformer(BaseEstimator, TransformerMixin):
 
         X_transformed = None
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        polynoms = PolynomialFeatures(self.degree)
+        x_polynoms = polynoms.fit_transform(X)
+        X_transformed = np.hstack((X, x_polynoms))
         # ========================
 
         return X_transformed
@@ -163,7 +172,23 @@ def top_correlated_features(df: DataFrame, target_feature, n=5):
     # TODO: Calculate correlations with target and sort features by it
 
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    white_df = df - df.mean()
+    sigmas = white_df.T @ white_df
+
+    sigma_y = np.sqrt(sigmas[target_feature][target_feature])
+    sigma_xy = sigmas[target_feature]
+    sigma_xy.drop(target_feature, inplace=True)
+    sigmas.drop(target_feature, axis='columns', inplace=True)
+    sigmas.drop(target_feature, inplace=True)
+    sigma_x = np.sqrt(sigmas.to_numpy().diagonal())
+
+    corr = (sigma_xy / sigma_x) / sigma_y
+    abs_corr = np.abs(corr)
+    best_corr = abs_corr.nlargest(n)
+    best_corr[best_corr.index] = corr[best_corr.index]
+    top_n_features = list(best_corr.index)
+    top_n_corr = best_corr.to_numpy()
+
     # ========================
 
     return top_n_features, top_n_corr
@@ -179,7 +204,7 @@ def mse_score(y: np.ndarray, y_pred: np.ndarray):
 
     # TODO: Implement MSE using numpy.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    mse = np.sum(((y - y_pred) ** 2)) / y.shape[0]
     # ========================
     return mse
 
@@ -194,7 +219,7 @@ def r2_score(y: np.ndarray, y_pred: np.ndarray):
 
     # TODO: Implement R^2 using numpy.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    r2 = 1 - (np.sum(((y - y_pred) ** 2)) / np.sum(((y - y.mean()) ** 2)))
     # ========================
     return r2
 
@@ -227,7 +252,10 @@ def cv_best_hyperparams(
     #  - You can use MSE or R^2 as a score.
 
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    params = {'bostonfeaturestransformer__degree': degree_range, 'linearregressor__reg_lambda': lambda_range}
+    clf = sklearn.model_selection.GridSearchCV(model, params, cv=k_folds, scoring='r2')
+    clf.fit(X, y)
+    best_params = clf.best_params_
     # ========================
 
     return best_params
