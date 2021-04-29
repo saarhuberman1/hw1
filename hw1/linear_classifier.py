@@ -111,9 +111,9 @@ class LinearClassifier(object):
             num_examples = 0
             for x, y in dl_train:
                 y_pred, class_scores = self.predict(x)
-                train_loss += loss_fn(x, y, class_scores, y_pred)
+                train_loss += loss_fn(x, y, class_scores, y_pred) * y.shape[0]
                 grad = loss_fn.grad()
-                self.weights = (1 - weight_decay) * self.weights - learn_rate * grad
+                self.weights = self.weights - learn_rate * (grad + weight_decay * self.weights)
                 num_examples += y.shape[0]
                 train_acc += self.evaluate_accuracy(y, y_pred) * y.shape[0]
             train_res[1].append(train_loss / num_examples)
@@ -122,7 +122,7 @@ class LinearClassifier(object):
             x_valid, y_valid = dl_utils.flatten(dl_valid)
             y_pred, class_scores = self.predict(x_valid)
             valid_res[0].append(self.evaluate_accuracy(y_valid, y_pred))
-            valid_res[1].append(loss_fn(x_valid, y_valid, class_scores, y_pred) / y_valid.shape[0])
+            valid_res[1].append(loss_fn(x_valid, y_valid, class_scores, y_pred))
             # ========================
             print(".", end="")
 
