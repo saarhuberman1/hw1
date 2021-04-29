@@ -174,7 +174,6 @@ def top_correlated_features(df: DataFrame, target_feature, n=5):
     # ====== YOUR CODE: ======
     white_df = df - df.mean()
     sigmas = white_df.T @ white_df
-
     sigma_y = np.sqrt(sigmas[target_feature][target_feature])
     sigma_xy = sigmas[target_feature]
     sigma_xy.drop(target_feature, inplace=True)
@@ -182,7 +181,7 @@ def top_correlated_features(df: DataFrame, target_feature, n=5):
     sigmas.drop(target_feature, inplace=True)
     sigma_x = np.sqrt(sigmas.to_numpy().diagonal())
 
-    corr = (sigma_xy / sigma_x) / sigma_y
+    corr = sigma_xy / (sigma_x * sigma_y)
     abs_corr = np.abs(corr)
     best_corr = abs_corr.nlargest(n)
     best_corr[best_corr.index] = corr[best_corr.index]

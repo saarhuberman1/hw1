@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader
 from .losses import ClassifierLoss
 import cs236781.dataloader_utils as dl_utils
 
+
 class LinearClassifier(object):
     def __init__(self, n_features, n_classes, weight_std=0.001):
         """
@@ -103,9 +104,6 @@ class LinearClassifier(object):
             #     using the weight_decay parameter.
 
             # ====== YOUR CODE: ======
-            # TODO: first without regularization
-            # TODO: add regularization
-            print(f"epoch {epoch_idx+1}/{max_epochs}")
             train_loss = 0
             train_acc = 0
             num_examples = 0
@@ -144,9 +142,10 @@ class LinearClassifier(object):
 
         # ====== YOUR CODE: ======
         print(self.weights.shape)
+        print(img_shape)
         weights = self.weights
         if has_bias:
-            weights = weights[1:, ]
+            weights = weights[1:]
         w_images = weights.T.reshape((weights.shape[1], img_shape[0], img_shape[1], img_shape[2]))
         # ========================
 

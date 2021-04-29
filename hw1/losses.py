@@ -50,10 +50,6 @@ class SVMHingeLoss(ClassifierLoss):
 
         loss = None
         # ====== YOUR CODE: ======
-        # need to add the check for same value
-        # M = torch.max(torch.tensor(0.), self.delta + x_scores - x_scores.gather(1, y.reshape(-1, 1)))
-        # print(M.shape)
-        # loss = (M.sum() - self.delta * y.shape[0]) / y.shape[0]
         delta_matrix = torch.ones(x_scores.shape) * self.delta
         value = torch.tensor([0.])
         indices = (torch.tensor(range(y.shape[0])), y)

@@ -17,7 +17,11 @@ for example in cifar 10 all the labeled 'dog' examples are only in the test set,
 3. True, the test set is needed to evaluate how the model generelizes to unseen data for estimating the out of sample 
 performance. the cross validation is used to choose the the hyper parameter of the model, meaning it is part of 
 the final model construction. if the cross validation will use the test data the results will not be reliable.
-4. NEED TO RECHECK
+4. False, The validation set performance is used to tune the hyper parameters of the model so the choice of the 
+final model is effected by the validation set. 
+the generalization error is a measure of how accurately the model is able to predict outcome values for previously 
+unseen data because of that the performance of the model on the validation set 
+can not be a proxy to the generalization error.
 
 """
 
@@ -42,7 +46,12 @@ Increasing K lead to improve in generalization for unseen data up to a certain p
 in the performance. the results for k=3 are better than for k=1, but for k > 3, the results are in downward trend.
 this can be explained by that the averaging 3 nearest points  can help generalize and prevent noise and anomalies to 
 affect the classification. but for larger k's you use more distant data point that are not relevant for the 
-classification and harm the its performance.
+classification and harm its performance.
+If k=1, we decide what will be the label of every new data-point based on its (one) closest neighbor. 
+This is very unstable as any wrong label in the training data will affect the clustering of all the data-points that
+it's their closest neighbors from the test set.
+On the other hand, if k=number_of_training_samples we decide the label of any new data-point to be the same as the 
+label that is most frequent in our training set.
 
 """
 
@@ -68,14 +77,7 @@ while k=3 will better generalize to unseen data.
 part3_q1 = r"""
 **Your answer:**
 
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
-
+NEED TO COMPLETE
 """
 
 part3_q2 = r"""
