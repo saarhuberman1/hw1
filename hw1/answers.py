@@ -143,13 +143,13 @@ we see that the points are much closer to the y=0 line, meaning the model fitted
 part4_q2 = r"""
 **Your answer:**
 
+1. Yes, the model remains a linear regression model as by definition, this is determined by the linear relation 
+between the features and the weights, not the features themselves. 
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+2. TODO!! not sure, wha happens if the non-linear function is not differentiable?? 
+
+3. The decision boundaries will still be hyperplanes as they are still defined by matrix multiplication of the same sort.
+TODO  
 
 """
 
