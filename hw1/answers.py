@@ -77,32 +77,36 @@ while k=3 will better generalize to unseen data.
 part3_q1 = r"""
 **Your answer:**
 
-NEED TO COMPLETE
+the choice of $\Delta$ is arbitrary because when $\Delta$' = a* $\Delta$, an appropriate set of weights will be 
+$W_i$' = a*$W_i$, which make  $L_{hinge}$' = a*$L_{hinge}$. since $W_i$' = a*$W_i$, the $L_{reg}$' = a*$L_{reg}$.
+from this we can see that L' = a*L. which is just a rescale of the loss, which is arbitrary.
+
 """
 
 part3_q2 = r"""
 **Your answer:**
 
+1. The linear model learn representation for each class that is encoded in the weights matrix. 
+you can see in the weights visualization that for each class the weights look like the class represented number itself.
+in inference time the model do matrix multiplication between the classes weights matrix and the requested example, 
+resulting in correlation vector of this example and each of the classes, when choosing the best correlated class. 
+the miss classify examples look similar to the learned representations of similar looking number classes, 
+and have more correlated areas than the true label class.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+2. this interpretation is different from the knn approach. in this case the model try to find a global 
+representation for each class and divide the feature space by an hyperplane. the knn model divide the feature space 
+to small regions infused by the metric and the training example, when each region correspond to a single class.
 
 """
 
 part3_q3 = r"""
 **Your answer:**
+1. Based on the graph of the training loss the learning rate we choose was good. if the learning rate was too low the 
+training loss will descend very slowly and will still be in be in negative slope. if the learning rate was too high the 
+training loss graph will be very spiky and will not converge to 0.
 
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+2. Our model is slightly over fitted as we can see it performs well on both train and test set, however 
+the training set accuracy is slightly higher than the test-set accuracy. 
 
 """
 
@@ -114,39 +118,39 @@ An equation: $e^{i\pi} -1 = 0$
 part4_q1 = r"""
 **Your answer:**
 
+The ideal pattern to see in a residual plot is a straight line at y=0 as this means the 
+y_pred-y_real=0 for every sample, meaning that the model prediction is perfect.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+If we look at the residuals graph for the top 5 features, big portion of the samples are in a small bounded margin from 
+the y=0 line, but we see that some samples fall far from that are meaning the prediction was far from the ground truth 
+value for these samples. However, looking at the final residual plot, the points are more centered to the zero line, 
+and most of the points are bounded at that margin, while the points that are outside are much closer to it meaning the 
+model fitted the data much better.
 
 """
 
 part4_q2 = r"""
 **Your answer:**
 
+adding more non-linear features to the data lift it to higher dimension and  enrich it with more information.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+1. this is still a linear regression model, as it calculated the a matrix multiplication between the features and the 
+weights, although the features that we used for the regression have a non linear connection the original data.
+2. in theory we can can fit an approximation of any non linear function in this approach, if we know the necessary 
+features. 
+3. the decision boundary will remain an hyper plane in the feature dimensions, but in the original data domain the 
+decision boundary will not be an hyper plane, instead it will be much more complex boundary.
 
 """
 
 part4_q3 = r"""
 **Your answer:**
 
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+1. Using np.logspace to chose values of $\lambda$ allows us to check the model performance for different orders 
+of magnitude of $\lambda$ as close values of $\lambda$ will probably produce similar results. Therefore, this allows us 
+to check a wider range of values with less iterations.
+2. The model was fitted 180 times: 3 folds, 3 degrees (1,2 and 3) and 20 different value for $\lambda$.
+ $3 \times 3 \times 20 = 180$ in total 
 
 """
 
