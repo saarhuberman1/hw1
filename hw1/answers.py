@@ -78,8 +78,10 @@ part3_q1 = r"""
 **Your answer:**
 
 the choice of $\Delta$ is arbitrary because when $\Delta$' = a* $\Delta$, an appropriate set of weights will be 
-$W_i$' = a*$W_i$, which make  $L_{hinge}$' = a*$L_{hinge}$. since $W_i$' = a*$W_i$, the $L_{reg}$' = a*$L_{reg}$.
-from this we can see that L' = a*L. which is just a rescale of the loss, which is arbitrary.
+$W_i$' = a*$W_i$, which make  $L_{hinge}$' = a*$L_{hinge}$. since $W_i$' = a*$W_i$, the $L_{reg}$' = $a^2$*$L_{reg}$.
+so we can use $\lambda$' = $1/a$ * $\lambda$, 
+from this we can see that L' = a*L. which is just a rescale of the loss and  
+choosing different hyper parameter $\lambda$, which is arbitrary.
 
 """
 
@@ -137,7 +139,7 @@ adding more non-linear features to the data lift it to higher dimension and  enr
 1. this is still a linear regression model, as it calculated the a matrix multiplication between the features and the 
 weights, although the features that we used for the regression have a non linear connection the original data.
 2. in theory we can can fit an approximation of any non linear function in this approach, if we know the necessary 
-features. 
+features.
 3. the decision boundary will remain an hyper plane in the feature dimensions, but in the original data domain the 
 decision boundary will not be an hyper plane, instead it will be much more complex boundary.
 
