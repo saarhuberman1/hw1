@@ -77,14 +77,30 @@ while k=3 will better generalize to unseen data.
 part3_q1 = r"""
 **Your answer:**
 
-the choice of $\Delta$ is arbitrary because when $\Delta$' = a* $\Delta$, an appropriate set of weights will be 
-$W_i$' = a*$W_i$, which make  $L_{hinge}$' = a*$L_{hinge}$. since $W_i$' = a*$W_i$, the $L_{reg}$' = $a^2$*$L_{reg}$.
-so we can use $\lambda$' = $1/a$ * $\lambda$, 
-from this we can see that L' = a*L. which is just a rescale of the loss and  
-choosing different hyper parameter $\lambda$, which is arbitrary.
+the choice of $\Delta$ is arbitrary for $\Delta$ > 0 because choosing when a new $\Delta'$, we can find an appropriate 
+$W' = \frac{\Delta'}{\Delta} \cdot W$ and $\lambda' = \frac{\Delta}{\Delta'}\cdot \lambda$:
+
+$$ L_{i}(\mat{W'}) =  \sum_{j \neq y_i} \max\left(0, \Delta' + \vectr{{w'}_j} \vec{x_i} - \vectr{{w'}_{y_i}} \vec{x_i}\right) = 
+\sum_{j \neq y_i} \max\left(0, \Delta' + \frac{\Delta'}{\Delta} \cdot \vectr{w_j} \vec{x_i} - 
+\frac{\Delta'}{\Delta} \cdot \vectr{w_{y_i}} \vec{x_i}\right) = 
+\frac{\Delta'}{\Delta} \cdot \sum_{j \neq y_i} \max\left(0, \Delta + \vectr{w_j} \vec{x_i} - \vectr{w_{y_i}} \vec{x_i}\right)
+$$
+
+$$ \frac{\lambda'}{2} \norm{\mat{W'}}^2 = 
+\frac{\Delta}{\Delta'}\cdot \frac{\lambda}{2} ({\frac{\Delta'}{\Delta}})^2 \cdot \norm{\mat{W}}^2 =
+\frac{\Delta'}{\Delta} \cdot \frac{\lambda}{2} \norm{\mat{W}}^2
+$$
+
+$$ \Rightarrow L(\mat{W'}) = \frac{\Delta'}{\Delta} \cdot L(\mat{W'})
+$$
+
+for every $\Delta$ we can find weights and tune a hyper parameter \lambda, which result in the same loss up to scaling. 
+this weights will be the same weights up to a constant factor.
+
 
 """
-
+# \frac{\Delta}{\Delta'}\cdot \frac{\lambda}{2} ({\frac{\Delta'}{\Delta}})^2 \cdot \norm{\mat{W}}^2 =
+# \frac{\Delta'}{\Delta} \cdot \frac{\lambda}{2} \norm{\mat{W}}^2
 part3_q2 = r"""
 **Your answer:**
 

@@ -159,7 +159,9 @@ def hyperparams():
     #  Manually tune the hyperparameters to get the training accuracy test
     #  to pass.
     # ====== YOUR CODE: ======
-    hp = dict(weight_std=0.1, learn_rate=0.1, weight_decay=0.001)
+    hp['weight_std'] = 0.01
+    hp['learn_rate'] = 0.01
+    hp['weight_decay'] = 0.001
     # ========================
 
     return hp
